@@ -1,11 +1,11 @@
 {
-  "name": "gulp-git-changed",
-  "version": "0.2.0",
-  "description": "Filter files by only those changed between the last commit and HEAD",
+  "name": "gulp-less-import-include",
+  "version": "0.0.1",
+  "description": "Exclude files only meant to be imported and include files where they are included",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/miguelrjim/gulp-git-changed.git"
+    "url": "git://github.com/miguelrjim/gulp-less-import-include"
   },
   "author": {
     "name": "Miguel Jimenez",

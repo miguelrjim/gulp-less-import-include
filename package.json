@@ -31,5 +31,8 @@
     "lodash": "^3.7.0",
     "minimatch": "^2.0.4",
     "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "vinyl-fs": "^1.0.0"
   }
 }

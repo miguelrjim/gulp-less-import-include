@@ -5,6 +5,7 @@ var path = require('path');
 var minimatch = require('minimatch');
 var glob = require('glob');
 var _ = require('lodash');
+var vinyl_fs = require('vinyl-fs');
 
 function processPatterns(patterns, fn) {
   // Filepaths to return.

@@ -1,6 +1,6 @@
 {
   "name": "gulp-less-import-include",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Exclude files only meant to be imported and include files where they are included",
   "license": "MIT",
   "repository": {

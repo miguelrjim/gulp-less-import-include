@@ -63,7 +63,7 @@ function lookForImport(options) {
     function(cb) {
       var that=this;
       lessToInclude = _.uniq(lessToInclude);
-      vinyl_fs.src(lessToInclude)
+      vinyl_fs.src(lessToInclude, {read: false})
         .pipe(through.obj(function(file, enc, cb) {
           that.push(file);
           cb();

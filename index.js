@@ -30,14 +30,15 @@ function processPatterns(patterns, fn) {
 };
 
 function lookForImport(options) {
-	var lessToInclude = [];
+  var lessToInclude = [];
+  var lessToExclude = [];
+  var alreadyAdded = [];
+  if (!options.import) {
+    throw new gutil.PluginError('gulp-less-import-include', '`src` required');
+  }
 
-	if (!options.import) {
-		throw new gutil.PluginError('gulp-git-changed', '`src` required');
-	}
-
-	return through.obj(
-		function(file, enc, cb) {
+  return through.obj(
+    function(file, enc, cb) {
       if(minimatch(file.relative, options.import)) {
         var folderToLookFor = file.base + path.sep;
         var position = file.relative.indexOf(path.sep);
@@ -45,17 +46,13 @@ function lookForImport(options) {
           folderToLookFor += file.relative.substring(0, position);
         folderToLookFor += path.sep;
 
-        var matches = processPatterns([
-          folderToLookFor + '**/*.less',
-          '!' + folderToLookFor + options.import
-        ], function(pattern) {
-          // Find all matching files for this pattern.
-          return glob.sync(pattern);
-        });
-        lessToInclude = lessToInclude.concat(matches);
+        lessToInclude.push(folderToLookFor + '**/*.less');
+        lessToExclude.push('!' + folderToLookFor + options.import);
+
         cb();
       }
       else {
+        alreadyAdded.push(file.path);
         this.push(file);
         cb();
       }
@@ -63,16 +60,20 @@ function lookForImport(options) {
     function(cb) {
       var that=this;
       lessToInclude = _.uniq(lessToInclude);
-      vinyl_fs.src(lessToInclude, {read: false})
+      lessToExclude = _.uniq(lessToExclude);
+      vinyl_fs.src(lessToInclude.concat(lessToExclude), {read: false})
         .pipe(through.obj(function(file, enc, cb) {
-          that.push(file);
+          if(alreadyAdded.indexOf(file.path) == -1) {
+            alreadyAdded.push(file.path);
+            that.push(file);
+          }
           cb();
         }, function(icb) {
           icb();
           cb();
         }));
     }
-	);
+  );
 };
 
 module.exports = lookForImport;
